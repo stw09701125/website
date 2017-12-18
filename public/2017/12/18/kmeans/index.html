@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="Kmeans Clustering with PythonKmeansKmeans 是一種屬於 unsupervised learning 的 clustering method
+什麼時候適合使用 Kmeans ?當你所取得的data沒有label且他們的features是numeric，你希望能將">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="Sheng-Tang Wong">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="kmeans"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="new"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>kmeans - new</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/website/public/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+	
+    <!-- Loading mathjax macro -->
+    <!-- Load mathjax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <!-- MathJax configuration -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        // Center justify equations in code and markdown cells. Elsewhere
+        // we use CSS to left justify single line equations in code cells.
+        displayAlign: 'center',
+        "HTML-CSS": {
+            styles: {'.MathJax_Display': {"margin": 0}},
+            linebreaks: { automatic: true }
+        }
+    });
+    </script>
+    <!-- End of mathjax configuration --><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+
+<body>
+
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/website/public/">$</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/website/public/">
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/website/public/archives">
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/website/public/tags">
+                            
+                                Tags
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/website/public/categories">
+                            
+                                Categories
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/stw09701125/">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('./source/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>kmeans</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        
+                            2017-12-18
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+
+            <!-- Gallery -->
+            
+             
+                    <div id="toc" class="post-toc-content col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                        <ol class="nav-toc"><li class="nav-toc-item nav-toc-level-1"><a class="nav-toc-link" href="#Kmeans-Clustering-with-Python"><span class="nav-toc-number">1.</span> <span class="nav-toc-text">Kmeans Clustering with Python</span></a><ol class="nav-toc-child"><li class="nav-toc-item nav-toc-level-2"><a class="nav-toc-link" href="#Kmeans"><span class="nav-toc-number">1.1.</span> <span class="nav-toc-text">Kmeans</span></a><ol class="nav-toc-child"><li class="nav-toc-item nav-toc-level-3"><a class="nav-toc-link" href="#什麼時候適合使用-Kmeans"><span class="nav-toc-number">1.1.1.</span> <span class="nav-toc-text">什麼時候適合使用 Kmeans ?</span></a><ol class="nav-toc-child"><li class="nav-toc-item nav-toc-level-4"><a class="nav-toc-link" href="#Euclidean-Distance"><span class="nav-toc-number">1.1.1.1.</span> <span class="nav-toc-text">Euclidean Distance</span></a></li></ol></li><li class="nav-toc-item nav-toc-level-3"><a class="nav-toc-link" href="#Kmeans-的運作方式"><span class="nav-toc-number">1.1.2.</span> <span class="nav-toc-text">Kmeans 的運作方式</span></a></li></ol></li><li class="nav-toc-item nav-toc-level-2"><a class="nav-toc-link" href="#Kmeans-with-Python"><span class="nav-toc-number">1.2.</span> <span class="nav-toc-text">Kmeans with Python</span></a><ol class="nav-toc-child"><li class="nav-toc-item nav-toc-level-3"><a class="nav-toc-link" href="#Preprocessing"><span class="nav-toc-number">1.2.1.</span> <span class="nav-toc-text">Preprocessing</span></a></li><li class="nav-toc-item nav-toc-level-3"><a class="nav-toc-link" href="#Kmeans-主要部分"><span class="nav-toc-number">1.2.2.</span> <span class="nav-toc-text">Kmeans 主要部分</span></a><ol class="nav-toc-child"><li class="nav-toc-item nav-toc-level-4"><a class="nav-toc-link" href="#詳細步驟："><span class="nav-toc-number">1.2.2.1.</span> <span class="nav-toc-text">詳細步驟：</span></a></li></ol></li><li class="nav-toc-item nav-toc-level-3"><a class="nav-toc-link" href="#Result"><span class="nav-toc-number">1.2.3.</span> <span class="nav-toc-text">Result</span></a><ol class="nav-toc-child"><li class="nav-toc-item nav-toc-level-4"><a class="nav-toc-link" href="#Kmeans-執行過程展示"><span class="nav-toc-number">1.2.3.1.</span> <span class="nav-toc-text">Kmeans 執行過程展示</span></a></li></ol></li><li class="nav-toc-item nav-toc-level-3"><a class="nav-toc-link" href="#If-K-gt-2-What-39-s-the-result-gonna-be"><span class="nav-toc-number">1.2.4.</span> <span class="nav-toc-text">If K > 2 What's the result gonna be ?</span></a></li></ol></li><li class="nav-toc-item nav-toc-level-2"><a class="nav-toc-link" href="#Kernel-Kmeans"><span class="nav-toc-number">1.3.</span> <span class="nav-toc-text">Kernel Kmeans</span></a><ol class="nav-toc-child"><li class="nav-toc-item nav-toc-level-3"><a class="nav-toc-link" href="#轉換datapoints"><span class="nav-toc-number">1.3.1.</span> <span class="nav-toc-text">轉換datapoints</span></a></li><li class="nav-toc-item nav-toc-level-3"><a class="nav-toc-link" href="#kmeans-steps-and-kernel-trick"><span class="nav-toc-number">1.3.2.</span> <span class="nav-toc-text">kmeans steps and kernel trick</span></a></li><li class="nav-toc-item nav-toc-level-3"><a class="nav-toc-link" href="#Kernel-Kmeans-with-Python"><span class="nav-toc-number">1.3.3.</span> <span class="nav-toc-text">Kernel Kmeans with Python</span></a><ol class="nav-toc-child"><li class="nav-toc-item nav-toc-level-4"><a class="nav-toc-link" href="#preprocessing"><span class="nav-toc-number">1.3.3.1.</span> <span class="nav-toc-text">preprocessing</span></a></li><li class="nav-toc-item nav-toc-level-4"><a class="nav-toc-link" href="#Initialize"><span class="nav-toc-number">1.3.3.2.</span> <span class="nav-toc-text">Initialize</span></a></li><li class="nav-toc-item nav-toc-level-4"><a class="nav-toc-link" href="#kernel-kmeans-主要部分"><span class="nav-toc-number">1.3.3.3.</span> <span class="nav-toc-text">kernel_kmeans 主要部分</span></a></li><li class="nav-toc-item nav-toc-level-4"><a class="nav-toc-link" href="#執行-amp-Result"><span class="nav-toc-number">1.3.3.4.</span> <span class="nav-toc-text">執行&Result</span></a></li></ol></li></ol></li></ol></li></ol>
+                    </div>
+            
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+               
+                <h1 id="Kmeans-Clustering-with-Python"><a href="#Kmeans-Clustering-with-Python" class="headerlink" title="Kmeans Clustering with Python"></a>Kmeans Clustering with Python</h1><h2 id="Kmeans"><a href="#Kmeans" class="headerlink" title="Kmeans"></a>Kmeans</h2><p>Kmeans 是一種屬於 unsupervised learning 的 clustering method</p>
+<h3 id="什麼時候適合使用-Kmeans"><a href="#什麼時候適合使用-Kmeans" class="headerlink" title="什麼時候適合使用 Kmeans ?"></a>什麼時候適合使用 Kmeans ?</h3><p>當你所取得的data沒有label且他們的features是numeric，你希望能將這些data分類。
+依照某種可以量化的相似度做分類。一般來說，這邊所指的相似度是Euclidean distance。</p>
+<h4 id="Euclidean-Distance"><a href="#Euclidean-Distance" class="headerlink" title="Euclidean Distance"></a><span id="euclidean">Euclidean Distance</span></h4><blockquote>
+<p>$$d(a, b) = \sqrt{(a_0 - b_0)^2 + (a_1 - b_1)^2 + (a_2 - b_2)^2 + ... + (a_n - b_n)^2}$$</p>
+</blockquote>
+<h3 id="Kmeans-的運作方式"><a href="#Kmeans-的運作方式" class="headerlink" title="Kmeans 的運作方式"></a>Kmeans 的運作方式</h3><ul>
+<li><strong><span id="step1">step1</span></strong>:<br>選擇你要將你的data分成幾個cluster，如果要分成3個cluster，則k=3。</li>
+<li><strong><span id="step2">step2</span></strong>:<br>隨機選擇k個點作為cluster的中心(centroid)，這k個中心點不一定要從你的dataset中選擇。</li>
+<li><strong><span id="step3">step3</span></strong>:<br>所有的datapoints都分配一個cluster給他，看他離哪個cluster的中心最近(距離最小)，它就屬於哪個cluster。</li>
+<li><strong><span id="step4">step4</span></strong>:<br>重新計算每個cluster中心點的位置。<ul>
+<li>$C_i = \frac{1}{|S<em>j|}\sum</em>{x_j \in S_j} {x_j}$</li>
+</ul>
+</li>
+<li><strong><span id="step5">step5</span></strong>:<br>根據新的中心點，再一次分配cluster給datapoints。  <ul>
+<li>if 達到converge的條件 -&gt; 結束 <ul>
+<li>所有datapoints的cluster維持不變</li>
+<li>中心點不再變動</li>
+</ul>
+</li>
+<li>else 回到<a href="#step4">step4</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="Kmeans-with-Python"><a href="#Kmeans-with-Python" class="headerlink" title="Kmeans with Python"></a>Kmeans with Python</h2><h3 id="Preprocessing"><a href="#Preprocessing" class="headerlink" title="Preprocessing"></a>Preprocessing</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_dataset</span><span class="params">(name)</span>:</span>    </span><br><span class="line">    <span class="keyword">return</span> np.loadtxt(name)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">euclidean</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> np.linalg.norm(a-b)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">plot</span><span class="params">(dataset, centroids, belongs_to)</span>:</span></span><br><span class="line">    colors = [<span class="string">"red"</span>, <span class="string">"blue"</span>, <span class="string">"green"</span>, <span class="string">"cyan"</span>, <span class="string">"magenta"</span>]</span><br><span class="line">    <span class="keyword">for</span> index, centroid <span class="keyword">in</span> enumerate(centroids):</span><br><span class="line">        plt.scatter(dataset[belongs_to[:, <span class="number">0</span>] == index, <span class="number">0</span>], dataset[belongs_to[:, <span class="number">0</span>] == index, <span class="number">1</span>], s = <span class="number">100</span>, c = colors[index], label = <span class="string">'Cluster '</span> + str(index))</span><br><span class="line">    plt.scatter(centroids[:, <span class="number">0</span>], centroids[:, <span class="number">1</span>], s = <span class="number">300</span>, c = <span class="string">'yellow'</span>, label = <span class="string">'Centroids'</span>)</span><br><span class="line">    plt.title(<span class="string">'Kmeans Clusters'</span>)</span><br><span class="line">    plt.legend()</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
+<p>import numpy 以及畫圖用的 matplot 這兩個library</p>
+<p>load_dataset 為讀取txt檔案的function </p>
+<p><a href="#euclidean">euclidean</a> 為計算距離的function  </p>
+<p>(np.linalg是numpy的線性代數函式庫)</p>
+<p>plot 用來畫圖呈現datapoints的分佈</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">kmeans_init</span><span class="params">(k, name)</span>:</span></span><br><span class="line">    history_centroids = []</span><br><span class="line">    dataset = load_dataset(name)</span><br><span class="line">    num_instances, num_features = dataset.shape</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># initialize centroid and store in np.array</span></span><br><span class="line">    temp = np.random.randint(<span class="number">0</span>, num_instances - <span class="number">1</span>, k)</span><br><span class="line">    centroids = dataset[temp]</span><br><span class="line">    <span class="comment"># recode the history centroids for plot</span></span><br><span class="line">    history_centroids.append(centroids)</span><br><span class="line">    <span class="comment"># use centroids old as the converge condition</span></span><br><span class="line">    centroids_old = np.zeros(centroids.shape)</span><br><span class="line">    belongs_to = np.zeros((num_instances, <span class="number">1</span>))</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> dataset, history_centroids, centroids, centroids_old, belongs_to</span><br></pre></td></tr></table></figure>
+<p>將keams會用到的資料結構先準備好  </p>
+<p>並且初始化他們  </p>
+<p>等同於執行上面說的<a href="#step1">step1</a>到<a href="#step3">step3</a>  </p>
+<p>dataset 是存我們所有的datapoints的np.array
+history_centroids 要保存kmeans iteratate過程中所有的歷史中心點，拿來製作動畫用(不過最後沒有用到)<br>centroids 存有現在的中心點位置<br>centroids_old 存有前一次的中心點位置，為了要計算是否達到converge條件<br>belongs_to 存有每個datapoint所屬cluster的標籤</p>
+<h3 id="Kmeans-主要部分"><a href="#Kmeans-主要部分" class="headerlink" title="Kmeans 主要部分"></a>Kmeans 主要部分</h3><p>以下code為<a href="#step4">step4</a>以及<a href="#step5">step5</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">kmeans</span><span class="params">(k, name, epsilon=<span class="number">0</span>, distance=euclidean)</span>:</span></span><br><span class="line">    </span><br><span class="line">    dataset, history_centroids, centroids, centroids_old, belongs_to = kmeans_init(k, name)</span><br><span class="line">    </span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    To calculate the distance between new centroids and old centroids as </span></span><br><span class="line"><span class="string">    the condition of covergence, if their distance is zero then new centroids </span></span><br><span class="line"><span class="string">    and old centroids are totally the same set of points, then the loop will stop.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    </span><br><span class="line">    norm = distance(centroids, centroids_old)</span><br><span class="line">    iteration = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> norm &gt; epsilon:</span><br><span class="line">        iteration += <span class="number">1</span></span><br><span class="line">        norm = distance(centroids, centroids_old)</span><br><span class="line">        centroids_old = centroids</span><br><span class="line">        <span class="keyword">for</span> index_instance, instance <span class="keyword">in</span> enumerate(dataset):</span><br><span class="line">            dist_vec = np.zeros((k, <span class="number">1</span>))</span><br><span class="line">            <span class="comment"># To calculate distance between each datapoint and centroids of cluster</span></span><br><span class="line">            <span class="comment"># and then store in dist_vec</span></span><br><span class="line">            <span class="keyword">for</span> index_centroid, centroid <span class="keyword">in</span> enumerate(centroids):</span><br><span class="line">                dist_vec[index_centroid] = distance(centroid, instance)</span><br><span class="line">                <span class="comment"># assign the closest centroid to each point  </span></span><br><span class="line">            belongs_to[index_instance, <span class="number">0</span>] = np.argmin(dist_vec)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># update the centroids</span></span><br><span class="line">        temp_centroids = np.zeros((k, <span class="number">2</span>))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> index <span class="keyword">in</span> range(len(centroids)):</span><br><span class="line">            instances_close = [i <span class="keyword">for</span> i <span class="keyword">in</span> range(len(belongs_to)) <span class="keyword">if</span> belongs_to[i] == index]</span><br><span class="line">            centroid = np.mean(dataset[instances_close], axis=<span class="number">0</span>)</span><br><span class="line">            temp_centroids[index, :] = centroid</span><br><span class="line"></span><br><span class="line">        centroids = temp_centroids</span><br><span class="line"></span><br><span class="line">        history_centroids.append(temp_centroids)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># plot(dataset, centroids, belongs_to)</span></span><br><span class="line">        <span class="comment"># 在while loop中plot是要把每次iteration更新後的結果畫出來，iterate幾次就輸出幾張圖   </span></span><br><span class="line">    plot(dataset, centroids, belongs_to)</span><br><span class="line">    <span class="keyword">return</span> centroids, belongs_to</span><br></pre></td></tr></table></figure>
+<h4 id="詳細步驟："><a href="#詳細步驟：" class="headerlink" title="詳細步驟："></a>詳細步驟：</h4><ol>
+<li>初始化norm作為converge條件的判斷依據</li>
+<li>判斷converge條件是否成立，norm &lt;= epsilon 則while loop 結束然後就完成了！</li>
+<li>更新iteration, norm, and centroids_old的值</li>
+<li>for loop走過dataset中每個元素，接著每個元素去計算他跟每個中心點的距離，把距離的值存在dist_vec中  </li>
+<li>找出dist_vec中的最小值，就是跟此元素最近的中心點，然後分配此中心所屬的cluster給此元素，記錄在belongs_to中  </li>
+<li>依據更新過後的cluster來重新計算cluster的中心點(<a href="#step4">step4</a>)</li>
+<li>回到第2步  </li>
+</ol>
+<hr>
+<ul>
+<li>np.mean中axis參數說明：<ul>
+<li>axis=0 會計算每個col的平均值 (會回傳1 x col大小的array)</li>
+<li>axis=1 會計算每個row的平均值 (會回傳row x 1大小的array)</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>執行kmeans:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kmeans(<span class="number">2</span>, <span class="string">"test1_data.txt"</span>)</span><br><span class="line">kmeans(<span class="number">2</span>, <span class="string">"test2_data.txt"</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h3><p>由於初始的中心位置每次都是隨機的，所以每一次執行的結果不一定會相同。<br>以下展示兩個test dataset某一次執行的結果，上面那邊是正確的分群，下面則是Kmeans做的分群。<br>這兩個例子用kmeans的分群效果並不完美，待會會介紹另外的分群方法，<br>Kernel Kmeans 以及 Spectral Clustering</p>
+<div>
+  <div>
+    <img src="./ground_truth1.png" align="left" weight="150" height="132" title="ans1" margin="0"> 
+    <img src="./ground_truth2.png" align="right|top" weight="150" height="132" title="result1" margin="0">
+  </div>
+  <div>
+    <img src="./output_1.png" align="left" weight="150" height="132" title="ans2" margin="0">
+    <img src="./output_2.png" align="right|top" weight="150" height="132" title="result2" margin="0">
+  </div>
+</div>
+
+<hr>
+<h4 id="Kmeans-執行過程展示"><a href="#Kmeans-執行過程展示" class="headerlink" title="Kmeans 執行過程展示"></a>Kmeans 執行過程展示</h4><p>我在某一次執行kmeans的過程，將每次iteration的結果都用圖片output出來然後合成gif檔案。<br>可以看到在Kmeans執行過程中，datapoints的分布以及每個cluster中心點的變化。</p>
+<blockquote>
+<p>上面是testdata1，下面則是testdata2
+<img src="./test1.gif" alt="alt test" title="test1_data">
+<img src="./test2.gif" alt="alt test" title="test2_data">  </p>
+</blockquote>
+<hr>
+<h3 id="If-K-gt-2-What-39-s-the-result-gonna-be"><a href="#If-K-gt-2-What-39-s-the-result-gonna-be" class="headerlink" title="If K &gt; 2 What&#39;s the result gonna be ?"></a>If K &gt; 2 What&#39;s the result gonna be ?</h3><p>將k值代入3跟4試試看。<br>改一下圖的輸出顏色。  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">plot</span><span class="params">(dataset, centroids, belongs_to)</span>:</span></span><br><span class="line">    colors = [<span class="string">"greenyellow"</span>, <span class="string">"skyblue"</span>, <span class="string">"salmon"</span>, <span class="string">"khaki"</span>, <span class="string">"magenta"</span>]</span><br><span class="line">    <span class="keyword">for</span> index, centroid <span class="keyword">in</span> enumerate(centroids):</span><br><span class="line">        plt.scatter(dataset[belongs_to[:, <span class="number">0</span>] == index, <span class="number">0</span>], dataset[belongs_to[:, <span class="number">0</span>] == index, <span class="number">1</span>], s = <span class="number">100</span>, c = colors[index], label = <span class="string">'Cluster '</span> + str(index))</span><br><span class="line">    plt.scatter(centroids[:, <span class="number">0</span>], centroids[:, <span class="number">1</span>], s = <span class="number">300</span>, c = <span class="string">'yellow'</span>, label = <span class="string">'Centroids'</span>)</span><br><span class="line">    plt.title(<span class="string">'Kmeans Clusters'</span>)</span><br><span class="line">    plt.legend()</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line">kmeans(<span class="number">3</span>, <span class="string">"test1_data.txt"</span>)</span><br><span class="line">kmeans(<span class="number">3</span>, <span class="string">"test2_data.txt"</span>)</span><br><span class="line">kmeans(<span class="number">4</span>, <span class="string">"test1_data.txt"</span>)</span><br><span class="line">kmeans(<span class="number">4</span>, <span class="string">"test2_data.txt"</span>)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>左:test1     右:test2
+上:3 cluster 下:4 cluster  </p>
+</blockquote>
+<div>
+  <div>
+    <img src="./output3_1.png" align="left" weight="150" height="132" title="ans1" margin="0"> 
+    <img src="./output3_2.png" align="right|top" weight="150" height="132" title="result1" margin="0">
+  </div>
+  <div>
+    <img src="./output4_1.png" align="left" weight="150" height="132" title="ans2" margin="0">
+    <img src="./output4_2.png" align="right|top" weight="150" height="132" title="result2" margin="0">
+  </div>
+</div>
+
+<h2 id="Kernel-Kmeans"><a href="#Kernel-Kmeans" class="headerlink" title="Kernel Kmeans"></a>Kernel Kmeans</h2><p>當資料並不是線性可分(linear separable)的時候，<br>一般使用euclidean distance的kmeans所train出來的結果會不盡理想。  </p>
+<p>這時候可以使用kernel kmeans將datapoints從原本的空間轉換到其他空間(更高維的空間)，<br>來解決資料分不開的問題。  </p>
+<h3 id="轉換datapoints"><a href="#轉換datapoints" class="headerlink" title="轉換datapoints"></a>轉換datapoints</h3><p>利用basis function $\phi$ 把datapoint $x$ 轉換到高維空間：$ x \rightarrow \phi(x)$<br>之後在高維空間作分群。</p>
+<h3 id="kmeans-steps-and-kernel-trick"><a href="#kmeans-steps-and-kernel-trick" class="headerlink" title="kmeans steps and kernel trick"></a>kmeans steps and kernel trick</h3><p>實際上kmeans在做的事情就是要最小化目標函數J，<br>J就是所有datapoints跟他所在的cluster中心的距離的總和，<br>寫成數學式子即是<br>$$ J = \sum<em>{n=1}^{N} \sum</em>{k=1}^K {r_{nk}||x_n - \mu_k||^2} $$  </p>
+<p>透過最佳化方法調整參數$r$以及$\mu$使目標函數J最小，<br>$r \in {0, 1}$ 找到最佳的$r$組合，<br>就是在assign datapoint to the closest cluster centroid 這個步驟，<br>$\mu$ 則是cluster 的中心點 找到最佳的$\mu$組合，<br>就是在重新計算中心點的位置這個步驟，<br>其中，  </p>
+<p>$$ \mu<em>k = \frac{\sum</em>{n=1}^N {r_{nk}x<em>n}} {\sum</em>{n=1}^N {r_{nk}}}$$  </p>
+<p>而kernel kmeans就只是將datapoints $x$ 轉換成$\phi(x)$，  </p>
+<p>目標函數就變成，  </p>
+<p>$$ J = \sum<em>{n=1}^{N} \sum</em>{k=1}^K {r_{nk} ||\phi(x_n) - \mu_k||^2} $$</p>
+<p>中心點則變成，<br>$$ \mu<em>k = \frac{\sum</em>{n=1}^N {r_{nk}\phi(x<em>n)}} {\sum</em>{n=1}^N {r_{nk}}}$$</p>
+<p>讓符號簡單一點，  </p>
+<p>$$ \mu<em>k = \sum</em>{n=1}^N {a_{nk}\phi(x_n)}$$</p>
+<p><span id="distance">計算第i個datapoint跟第k個cluster centroids的距離函式則是，  </span></p>
+<p>$$ ||\phi(x<em>i) - \sum</em>{n=1}^N {a_{nk}\phi(x_n)}||^2 $$</p>
+<hr>
+<p>然而現在有個問題，  </p>
+<p>如果你使用的basis function是個維度很大甚至無限維度的轉換，例如RBF，  </p>
+<p>我們該如果去計算距離以及更新中心點呢？  </p>
+<p>利用kernel trick 即可解決我們的問題，  </p>
+<p>kernel trick 目的就是要將kmeans步驟中會用到的所有的$\phi(x)$換成可以計算的kernel K。  </p>
+<p>kernel trick的詳細步驟我們就不在這邊說明，  </p>
+<p>最後計算datapoint跟中心點的<a href="#distance">距離函式</a>會變成，</p>
+<p>$$ K(x_i, x<em>i) - 2\sum</em>{n=1}^N {a_{nk}K(x_i, x<em>n)} + \sum</em>{n=1}^N \sum<em>{m=1}^N {a</em>{nk}a_{mk}K(x_n, x_m)} $$  </p>
+<p>由上面的式子我們可以看到<strong>完全沒有$\phi(x)$的存在</strong>，  </p>
+<p>更厲害的是我們也不用更新中心點，  </p>
+<p>只要重新分配每個datapoint所屬的cluster就等同於決定了新的中心點了。  </p>
+<h3 id="Kernel-Kmeans-with-Python"><a href="#Kernel-Kmeans-with-Python" class="headerlink" title="Kernel Kmeans with Python"></a>Kernel Kmeans with Python</h3><h4 id="preprocessing"><a href="#preprocessing" class="headerlink" title="preprocessing"></a>preprocessing</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_dataset</span><span class="params">(name)</span>:</span>    </span><br><span class="line">    <span class="keyword">return</span> np.loadtxt(name)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">euclidean</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> np.linalg.norm(a-b)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">RBF_kernel_matrix</span><span class="params">(X, G)</span>:</span></span><br><span class="line">    datasize = X.shape</span><br><span class="line">    Gram = np.zeros((datasize[<span class="number">0</span>], datasize[<span class="number">0</span>]))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(Gram.shape[<span class="number">0</span>]):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i, Gram.shape[<span class="number">0</span>]):</span><br><span class="line">            <span class="keyword">if</span> i != j:</span><br><span class="line">                square_dist = euclidean(X[i], X[j])</span><br><span class="line">                base = <span class="number">2.0</span> * (G**<span class="number">2</span>)</span><br><span class="line">                Gram[i, j] = np.exp(-(square_dist)**<span class="number">2</span> / base)</span><br><span class="line">                Gram[j, i] = Gram[i, j]</span><br><span class="line">            <span class="comment">#else:</span></span><br><span class="line">                <span class="comment">#Gram[i, j] = 1</span></span><br><span class="line">    <span class="keyword">return</span> Gram</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">plot_without_centroids</span><span class="params">(k, dataset, belongs_to)</span>:</span></span><br><span class="line">    colors = [<span class="string">"salmon"</span>, <span class="string">"skyblue"</span>, <span class="string">"greenyellow"</span>, <span class="string">"cyan"</span>, <span class="string">"magenta"</span>]</span><br><span class="line">    <span class="keyword">for</span> index <span class="keyword">in</span> range(k):</span><br><span class="line">        plt.scatter(dataset[belongs_to[:, <span class="number">0</span>] == index, <span class="number">0</span>], dataset[belongs_to[:, <span class="number">0</span>] == index, <span class="number">1</span>], s = <span class="number">100</span>, c = colors[index], label = <span class="string">'Cluster '</span> + str(index))</span><br><span class="line">    plt.title(<span class="string">'Kmeans Clusters'</span>)</span><br><span class="line">    plt.legend()</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
+<p>跟kmeans幾乎一樣，  </p>
+<p>只有多了一個計算RBF kernel matrix的function，  </p>
+<p>唯一要注意的就是對角線的值這邊使用的是0，</p>
+<p>使用1結果會有點不理想，但我也不知道為什麼會這樣。  </p>
+<h4 id="Initialize"><a href="#Initialize" class="headerlink" title="Initialize"></a>Initialize</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">kernel_kmeans_init</span><span class="params">(k, name, variance, method)</span>:</span>    </span><br><span class="line">    <span class="comment"># initialize kernel and datapoints assignment</span></span><br><span class="line">    dataset = load_dataset(name)</span><br><span class="line">    Gram = RBF_kernel_matrix(dataset, variance)</span><br><span class="line">    datasize = dataset.shape[<span class="number">0</span>]</span><br><span class="line">    belongs_to = np.zeros((datasize, <span class="number">1</span>))</span><br><span class="line">    old_belongs_to = np.copy(belongs_to)</span><br><span class="line">    cluster_size = np.zeros((k, <span class="number">1</span>))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> method == <span class="string">"random"</span>:       </span><br><span class="line">        half = int(datasize / k)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> n <span class="keyword">in</span> range(k - <span class="number">1</span>):</span><br><span class="line">            old_half = half</span><br><span class="line">            half *= n + <span class="number">2</span></span><br><span class="line">            belongs_to[old_half:half, :] = n + <span class="number">1</span>        </span><br><span class="line"></span><br><span class="line">    <span class="keyword">elif</span> method == <span class="string">"kmeans"</span>:</span><br><span class="line">        centroids = dataset[np.random.randint(<span class="number">0</span>, datasize - <span class="number">1</span>, k)]</span><br><span class="line">        <span class="keyword">for</span> index_instance, instance <span class="keyword">in</span> enumerate(dataset):</span><br><span class="line">            dist_vec_temp = np.zeros((k, <span class="number">1</span>))</span><br><span class="line">            <span class="comment"># To calculate distance between each datapoint and centroids of cluster</span></span><br><span class="line">            <span class="comment"># and then store in dist_vec</span></span><br><span class="line">            <span class="keyword">for</span> index_centroid, centroid <span class="keyword">in</span> enumerate(centroids):</span><br><span class="line">                dist_vec_temp[index_centroid] = euclidean(centroid, instance)</span><br><span class="line">                <span class="comment"># assign the closest centroid to each point  </span></span><br><span class="line">            belongs_to[index_instance, <span class="number">0</span>] = np.argmin(dist_vec_temp)</span><br><span class="line">            </span><br><span class="line">    <span class="keyword">for</span> val <span class="keyword">in</span> belongs_to:</span><br><span class="line">        cluster_size[int(val[<span class="number">0</span>])] += <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> dataset, Gram, belongs_to, old_belongs_to, cluster_size, datasize</span><br></pre></td></tr></table></figure>
+<p>初始化kernel kmeans，  </p>
+<p>我這邊使用兩個初始化的方法，  </p>
+<p>一個是<strong>隨機</strong>，  </p>
+<p>雖然也只是依照index去平均分配cluster而已，  </p>
+<p>另一個是先<strong>利用kmeans的初始化方法</strong>隨便找中心點，  </p>
+<p>然後做第一次的距離計算，並且assign cluster，  </p>
+<p>不過這兩種方法好像差別不大，  </p>
+<p>畢竟第二種方法在原本的sample space上分群，  </p>
+<p>也只是把在sample space上相似的點分在一起，  </p>
+<p>不太確定這樣能帶來什麼顯著的效果。  </p>
+<h4 id="kernel-kmeans-主要部分"><a href="#kernel-kmeans-主要部分" class="headerlink" title="kernel_kmeans 主要部分"></a>kernel_kmeans 主要部分</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">kernel_kmeans</span><span class="params">(k, name, variance=<span class="number">2</span>, method=<span class="string">"random"</span>)</span>:</span></span><br><span class="line">    <span class="comment"># initialize</span></span><br><span class="line">    dataset, Gram, belongs_to, old_belongs_to, cluster_size, datasize \</span><br><span class="line">    = kernel_kmeans_init(k, name, variance, method)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># main operation</span></span><br><span class="line">    iteration = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">not</span> (old_belongs_to == belongs_to).all():  </span><br><span class="line">        iteration += <span class="number">1</span></span><br><span class="line">        <span class="comment"># compute distance</span></span><br><span class="line">        old_belongs_to = np.copy(belongs_to)</span><br><span class="line">        dist_vec = np.zeros((datasize, k))</span><br><span class="line">        <span class="keyword">for</span> idx, c_size <span class="keyword">in</span> enumerate(cluster_size):</span><br><span class="line">            <span class="comment"># calculate the last term in the distance formular</span></span><br><span class="line">            <span class="comment"># to filter all datapoints in cluster idx</span></span><br><span class="line">            dist_temp = Gram[belongs_to[:, <span class="number">0</span>] == idx]</span><br><span class="line">            dist_temp = dist_temp[:, belongs_to[:, <span class="number">0</span>] == idx]</span><br><span class="line">            <span class="comment"># sum up all kernel value for cluster idx</span></span><br><span class="line">            dist_cluster = np.sum(dist_temp, axis=<span class="number">0</span>)        </span><br><span class="line">            dist_cluster = np.sum(dist_cluster, axis=<span class="number">0</span>)</span><br><span class="line">            dist_cluster /= c_size[<span class="number">0</span>] ** <span class="number">2</span></span><br><span class="line">            <span class="comment"># to calculate the second term in the distance formular</span></span><br><span class="line">            <span class="keyword">for</span> data_idx, data <span class="keyword">in</span> enumerate(dataset):</span><br><span class="line">                dist = dist_cluster</span><br><span class="line">                dist += (<span class="number">-2</span>) * np.sum(Gram[data_idx, belongs_to[:, <span class="number">0</span>] == idx], axis = <span class="number">0</span>) / c_size[<span class="number">0</span>]</span><br><span class="line">                dist_vec[data_idx, idx] = dist + <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i, vec <span class="keyword">in</span> enumerate(dist_vec):</span><br><span class="line">            belongs_to[i, <span class="number">0</span>] = np.argmin(vec)</span><br><span class="line">    </span><br><span class="line">        cluster_size.fill(<span class="number">0</span>)</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">for</span> val <span class="keyword">in</span> belongs_to:</span><br><span class="line">            cluster_size[int(val[<span class="number">0</span>])] += <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        plot_without_centroids(k, dataset, belongs_to)</span><br></pre></td></tr></table></figure>
+<p>執行kernel kmeans，  </p>
+<p>就計算我們上面說明的距離公式，  </p>
+<p>這邊麻煩的點就是要想清楚index哪些要算哪些不算，  </p>
+<p>最後把圖畫出來，  </p>
+<p>每個iteration畫一次看怎麼變化，  </p>
+<p>並且設定收斂條件為兩次iteration datapoints們所屬的cluster都沒有變動就算收斂。  </p>
+<h4 id="執行-amp-Result"><a href="#執行-amp-Result" class="headerlink" title="執行&amp;Result"></a>執行&amp;Result</h4><p>可以調整RBF_kernel的variance跟初始化方法，  </p>
+<p>後來發現 variance對於結果的影響蠻大的，  </p>
+<p>需要好好調整，針對不同的dataset可能要的variance不同。  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kernel_kmeans(<span class="number">2</span>, <span class="string">"test2_data.txt"</span>)</span><br><span class="line">kernel_kmeans(<span class="number">2</span>, <span class="string">"test2_data.txt"</span>, <span class="number">10</span>, <span class="string">"kmeans"</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="./kernel_k.gif" alt="alt test" title="kernel_k"></p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+<!-- <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div> -->
+
+ <!-- <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+         <div class="post-toc"> -->
+
+			<!-- 
+				<div id="toc" class="post-toc-content">
+					<ol class="nav-toc"><li class="nav-toc-item nav-toc-level-1"><a class="nav-toc-link" href="#Kmeans-Clustering-with-Python"><span class="nav-toc-number">1.</span> <span class="nav-toc-text">Kmeans Clustering with Python</span></a><ol class="nav-toc-child"><li class="nav-toc-item nav-toc-level-2"><a class="nav-toc-link" href="#Kmeans"><span class="nav-toc-number">1.1.</span> <span class="nav-toc-text">Kmeans</span></a><ol class="nav-toc-child"><li class="nav-toc-item nav-toc-level-3"><a class="nav-toc-link" href="#什麼時候適合使用-Kmeans"><span class="nav-toc-number">1.1.1.</span> <span class="nav-toc-text">什麼時候適合使用 Kmeans ?</span></a><ol class="nav-toc-child"><li class="nav-toc-item nav-toc-level-4"><a class="nav-toc-link" href="#Euclidean-Distance"><span class="nav-toc-number">1.1.1.1.</span> <span class="nav-toc-text">Euclidean Distance</span></a></li></ol></li><li class="nav-toc-item nav-toc-level-3"><a class="nav-toc-link" href="#Kmeans-的運作方式"><span class="nav-toc-number">1.1.2.</span> <span class="nav-toc-text">Kmeans 的運作方式</span></a></li></ol></li><li class="nav-toc-item nav-toc-level-2"><a class="nav-toc-link" href="#Kmeans-with-Python"><span class="nav-toc-number">1.2.</span> <span class="nav-toc-text">Kmeans with Python</span></a><ol class="nav-toc-child"><li class="nav-toc-item nav-toc-level-3"><a class="nav-toc-link" href="#Preprocessing"><span class="nav-toc-number">1.2.1.</span> <span class="nav-toc-text">Preprocessing</span></a></li><li class="nav-toc-item nav-toc-level-3"><a class="nav-toc-link" href="#Kmeans-主要部分"><span class="nav-toc-number">1.2.2.</span> <span class="nav-toc-text">Kmeans 主要部分</span></a><ol class="nav-toc-child"><li class="nav-toc-item nav-toc-level-4"><a class="nav-toc-link" href="#詳細步驟："><span class="nav-toc-number">1.2.2.1.</span> <span class="nav-toc-text">詳細步驟：</span></a></li></ol></li><li class="nav-toc-item nav-toc-level-3"><a class="nav-toc-link" href="#Result"><span class="nav-toc-number">1.2.3.</span> <span class="nav-toc-text">Result</span></a><ol class="nav-toc-child"><li class="nav-toc-item nav-toc-level-4"><a class="nav-toc-link" href="#Kmeans-執行過程展示"><span class="nav-toc-number">1.2.3.1.</span> <span class="nav-toc-text">Kmeans 執行過程展示</span></a></li></ol></li><li class="nav-toc-item nav-toc-level-3"><a class="nav-toc-link" href="#If-K-gt-2-What-39-s-the-result-gonna-be"><span class="nav-toc-number">1.2.4.</span> <span class="nav-toc-text">If K > 2 What's the result gonna be ?</span></a></li></ol></li><li class="nav-toc-item nav-toc-level-2"><a class="nav-toc-link" href="#Kernel-Kmeans"><span class="nav-toc-number">1.3.</span> <span class="nav-toc-text">Kernel Kmeans</span></a><ol class="nav-toc-child"><li class="nav-toc-item nav-toc-level-3"><a class="nav-toc-link" href="#轉換datapoints"><span class="nav-toc-number">1.3.1.</span> <span class="nav-toc-text">轉換datapoints</span></a></li><li class="nav-toc-item nav-toc-level-3"><a class="nav-toc-link" href="#kmeans-steps-and-kernel-trick"><span class="nav-toc-number">1.3.2.</span> <span class="nav-toc-text">kmeans steps and kernel trick</span></a></li><li class="nav-toc-item nav-toc-level-3"><a class="nav-toc-link" href="#Kernel-Kmeans-with-Python"><span class="nav-toc-number">1.3.3.</span> <span class="nav-toc-text">Kernel Kmeans with Python</span></a><ol class="nav-toc-child"><li class="nav-toc-item nav-toc-level-4"><a class="nav-toc-link" href="#preprocessing"><span class="nav-toc-number">1.3.3.1.</span> <span class="nav-toc-text">preprocessing</span></a></li><li class="nav-toc-item nav-toc-level-4"><a class="nav-toc-link" href="#Initialize"><span class="nav-toc-number">1.3.3.2.</span> <span class="nav-toc-text">Initialize</span></a></li><li class="nav-toc-item nav-toc-level-4"><a class="nav-toc-link" href="#kernel-kmeans-主要部分"><span class="nav-toc-number">1.3.3.3.</span> <span class="nav-toc-text">kernel_kmeans 主要部分</span></a></li><li class="nav-toc-item nav-toc-level-4"><a class="nav-toc-link" href="#執行-amp-Result"><span class="nav-toc-number">1.3.3.4.</span> <span class="nav-toc-text">執行&Result</span></a></li></ol></li></ol></li></ol></li></ol>
+				</div>
+			 -->
+ <!--     </section>
+    </div>
+  </aside> -->
+
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+                        <li>
+                            <a href="https://stw09701125.github.io/website/" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-home fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        
+
+                    
+                        <li>
+                            <a href="https://www.facebook.com/shengtang.wong" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/stw09701125/" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+                        <li>
+                            <a href="https://www.linkedin.com/in/sheng-tang-wong-305931128/" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2017 Sheng-Tang Wong<br></p>
+                <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+<!-- Sidebar motions -->
+<!-- <script src="/website/public/js/motion.js"></script>
+<script src="/website/public/js/velocity.min.js"></script>
+<script src="/website/public/js/velocity.ui.min.js"></script> --><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+</body>
+
+</html>

@@ -4,7 +4,7 @@
 <!-- Head tag -->
 <head>
 
-    <meta charset="utf-8">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -70,12 +70,34 @@
     <!-- favicon -->
     
 	
+    <!-- Loading mathjax macro -->
+    <!-- Load mathjax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <!-- MathJax configuration -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        // Center justify equations in code and markdown cells. Elsewhere
+        // we use CSS to left justify single line equations in code cells.
+        displayAlign: 'center',
+        "HTML-CSS": {
+            styles: {'.MathJax_Display': {"margin": 0}},
+            linebreaks: { automatic: true }
+        }
+    });
+    </script>
+    <!-- End of mathjax configuration --><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
 <body>
 
-    <!-- Menu -->
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- Menu -->
     <!-- Navigation -->
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
     <div class="container-fluid">
@@ -162,6 +184,21 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+                <div class="post-preview">
+    <a href="/website/public/2017/12/18/kmeans/">
+        <h2 class="post-title">
+            kmeans
+        </h2>
+        
+    </a>
+    <p class="post-meta">
+        <!-- Date and Author -->
+        
+        2017-12-18
+    </p>
+</div>
+<hr>
             
                 <div class="post-preview">
     <a href="/website/public/2017/11/27/test/">
@@ -289,7 +326,7 @@
 <!-- Sidebar motions -->
 <!-- <script src="/website/public/js/motion.js"></script>
 <script src="/website/public/js/velocity.min.js"></script>
-<script src="/website/public/js/velocity.ui.min.js"></script> -->
+<script src="/website/public/js/velocity.ui.min.js"></script> --><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>
