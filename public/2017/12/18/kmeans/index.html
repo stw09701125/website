@@ -220,7 +220,7 @@
 <li><strong><span id="step2">step2</span></strong>:<br>隨機選擇k個點作為cluster的中心(centroid)，這k個中心點不一定要從你的dataset中選擇。</li>
 <li><strong><span id="step3">step3</span></strong>:<br>所有的datapoints都分配一個cluster給他，看他離哪個cluster的中心最近(距離最小)，它就屬於哪個cluster。</li>
 <li><strong><span id="step4">step4</span></strong>:<br>重新計算每個cluster中心點的位置。<ul>
-<li>$C_i = \frac{1}{|S<em>j|}\sum</em>{x_j \in S_j} {x_j}$</li>
+<li>$C_i = \frac{1}{|S_j|}\sum_{x_j \in S_j} {x_j}$</li>
 </ul>
 </li>
 <li><strong><span id="step5">step5</span></strong>:<br>根據新的中心點，再一次分配cluster給datapoints。  <ul>
@@ -307,17 +307,17 @@ history_centroids 要保存kmeans iteratate過程中所有的歷史中心點，�
 <h2 id="Kernel-Kmeans"><a href="#Kernel-Kmeans" class="headerlink" title="Kernel Kmeans"></a>Kernel Kmeans</h2><p>當資料並不是線性可分(linear separable)的時候，<br>一般使用euclidean distance的kmeans所train出來的結果會不盡理想。  </p>
 <p>這時候可以使用kernel kmeans將datapoints從原本的空間轉換到其他空間(更高維的空間)，<br>來解決資料分不開的問題。  </p>
 <h3 id="轉換datapoints"><a href="#轉換datapoints" class="headerlink" title="轉換datapoints"></a>轉換datapoints</h3><p>利用basis function $\phi$ 把datapoint $x$ 轉換到高維空間：$ x \rightarrow \phi(x)$<br>之後在高維空間作分群。</p>
-<h3 id="kmeans-steps-and-kernel-trick"><a href="#kmeans-steps-and-kernel-trick" class="headerlink" title="kmeans steps and kernel trick"></a>kmeans steps and kernel trick</h3><p>實際上kmeans在做的事情就是要最小化目標函數J，<br>J就是所有datapoints跟他所在的cluster中心的距離的總和，<br>寫成數學式子即是<br>$$ J = \sum<em>{n=1}^{N} \sum</em>{k=1}^K {r_{nk}||x_n - \mu_k||^2} $$  </p>
+<h3 id="kmeans-steps-and-kernel-trick"><a href="#kmeans-steps-and-kernel-trick" class="headerlink" title="kmeans steps and kernel trick"></a>kmeans steps and kernel trick</h3><p>實際上kmeans在做的事情就是要最小化目標函數J，<br>J就是所有datapoints跟他所在的cluster中心的距離的總和，<br>寫成數學式子即是<br>$$ J = \sum_{n=1}^{N} \sum_{k=1}^K {r_{nk}||x_n - \mu_k||^2} $$  </p>
 <p>透過最佳化方法調整參數$r$以及$\mu$使目標函數J最小，<br>$r \in {0, 1}$ 找到最佳的$r$組合，<br>就是在assign datapoint to the closest cluster centroid 這個步驟，<br>$\mu$ 則是cluster 的中心點 找到最佳的$\mu$組合，<br>就是在重新計算中心點的位置這個步驟，<br>其中，  </p>
-<p>$$ \mu<em>k = \frac{\sum</em>{n=1}^N {r_{nk}x<em>n}} {\sum</em>{n=1}^N {r_{nk}}}$$  </p>
+<p>$$ \mu_k = \frac{\sum_{n=1}^N {r_{nk}x_n}} {\sum_{n=1}^N {r_{nk}}}$$  </p>
 <p>而kernel kmeans就只是將datapoints $x$ 轉換成$\phi(x)$，  </p>
 <p>目標函數就變成，  </p>
-<p>$$ J = \sum<em>{n=1}^{N} \sum</em>{k=1}^K {r_{nk} ||\phi(x_n) - \mu_k||^2} $$</p>
-<p>中心點則變成，<br>$$ \mu<em>k = \frac{\sum</em>{n=1}^N {r_{nk}\phi(x<em>n)}} {\sum</em>{n=1}^N {r_{nk}}}$$</p>
+<p>$$ J = \sum_{n=1}^{N} \sum_{k=1}^K {r_{nk} ||\phi(x_n) - \mu_k||^2} $$</p>
+<p>中心點則變成，<br>$$ \mu_k = \frac{\sum_{n=1}^N {r_{nk}\phi(x_n)}} {\sum_{n=1}^N {r_{nk}}}$$</p>
 <p>讓符號簡單一點，  </p>
-<p>$$ \mu<em>k = \sum</em>{n=1}^N {a_{nk}\phi(x_n)}$$</p>
+<p>$$ \mu_k = \sum_{n=1}^N {a_{nk}\phi(x_n)}$$</p>
 <p><span id="distance">計算第i個datapoint跟第k個cluster centroids的距離函式則是，  </span></p>
-<p>$$ ||\phi(x<em>i) - \sum</em>{n=1}^N {a_{nk}\phi(x_n)}||^2 $$</p>
+<p>$$ ||\phi(x_i) - \sum_{n=1}^N {a_{nk}\phi(x_n)}||^2 $$</p>
 <hr>
 <p>然而現在有個問題，  </p>
 <p>如果你使用的basis function是個維度很大甚至無限維度的轉換，例如RBF，  </p>
@@ -326,7 +326,7 @@ history_centroids 要保存kmeans iteratate過程中所有的歷史中心點，�
 <p>kernel trick 目的就是要將kmeans步驟中會用到的所有的$\phi(x)$換成可以計算的kernel K。  </p>
 <p>kernel trick的詳細步驟我們就不在這邊說明，  </p>
 <p>最後計算datapoint跟中心點的<a href="#distance">距離函式</a>會變成，</p>
-<p>$$ K(x_i, x<em>i) - 2\sum</em>{n=1}^N {a_{nk}K(x_i, x<em>n)} + \sum</em>{n=1}^N \sum<em>{m=1}^N {a</em>{nk}a_{mk}K(x_n, x_m)} $$  </p>
+<p>$$ K(x_i, x_i) - 2\sum_{n=1}^N {a_{nk}K(x_i, x_n)} + \sum_{n=1}^N \sum_{m=1}^N {a_{nk}a_{mk}K(x_n, x_m)} $$  </p>
 <p>由上面的式子我們可以看到<strong>完全沒有$\phi(x)$的存在</strong>，  </p>
 <p>更厲害的是我們也不用更新中心點，  </p>
 <p>只要重新分配每個datapoint所屬的cluster就等同於決定了新的中心點了。  </p>
